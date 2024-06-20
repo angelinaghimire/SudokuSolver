@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Solver</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <style>
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(142, 68, 173, 0.2));
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding-top: 60px; /* Adjust to account for navbar height */
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #9279ba;
+            padding: 10px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar .title {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end; /* Align items to the right */
+            align-items: center;
+            margin: 0;
+            padding: 0; /* Ensure there's no padding on the ul */
+        }
+        
+        .navbar ul li {
+            margin: 0 15px;
+        }
+        
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .navbar ul li a:hover {
+            color: #6c5a9b;
+        }
+        
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            margin-top: 20px; /* Add margin to separate from navbar */
+        }
+
+        .title-content {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #3498db;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #8e44ad;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #555;
+            text-align: left;
+        }
+
+        button {
+            font-size: 18px;
+            font-weight: 600;
+            padding: 14px 28px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+
+        .by-section {
+            margin-top: 10px;
+        }
+
+        .by-section a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .by-section a:hover {
+            color: #3498db;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .title-content {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 12px 24px;
+            }
+
+            .navbar .title {
+                font-size: 18px;
+            }
+
+            .navbar ul li a {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="title">Sudoku Solver</div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/analyze">Analyze</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="container">
+            <div class="title-content">Time & Space Complexity</div>
+            <p>
+                <span class="subtitle">What is the Time Complexity?</span><br>
+                The time complexity of the backtracking algorithm used to solve Sudoku is exponential. At each step of the algorithm, a decision is made to place a number (from 1 to 9) in an empty cell. With a branching factor of up to 9 choices per cell and a depth of recursion depending on the number of empty cells, the time complexity is typically expressed as <strong>O(9<sup>m*n</sup>)</strong>, where <em>m</em> is the number of empty cells and <em>n</em> is the number of decisions or steps required to solve the Sudoku.
+            </p>
+            <p>
+                <span class="subtitle">What is the Space Complexity?</span><br>
+                The space complexity primarily involves the recursive call stack. Each recursion depth corresponds to a decision point in placing numbers in the Sudoku grid. Therefore, the space complexity is <strong>O(m)</strong>, where <em>m</em> is the maximum recursion depth. In practical terms, <em>m</em> can be up to <em>81-n</em>, where <em>n</em> is the number of non-empty cells in the initial Sudoku grid.
+            </p>
+            <p>
+                All of this exponential growth in time complexity and the linear growth in space complexity are important considerations, especially for larger Sudoku grids or highly sparse initial configurations.
+            </p>
+        </div>
+    </div>
+    <footer>
+        &copy; 2024 Sudoku Generator. All rights reserved.
+        <div class="by-section">
+            Developed by <a href="#">Angelina Ghimire</a>, <a href="#">Saswat Khadka</a>, <a href="#">Nilotpal Dhakal</a>, and <a href="#">Nisham Ghimire</a>.
+        </div>
+    </footer>
+</body>
+</html>
